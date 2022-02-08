@@ -7,14 +7,29 @@
 
 
 function balanceIndex(arr){
-    var num = 0;
-    for (var i = 0; i < arr.length; i++){
-        num += arr[i];
+    //find the total (ex: 13) and put in variable
+    let totalSum = 0;
+    for(let i = 0; i<arr.length; i++){
+        totalSum+= arr[i];
     }
-    console.log(num);
-    for (var j=0; j < arr.length[i]; j++){
-        
+
+    //create a variable to keep track of left side sum (arr[0] ex: -2) (leftsum = arr[0])
+    let leftSideSum = arr[0]
+
+    //go through the array starting at index 1 (b/c i know theres not gona be a balance at index 0)
+    for(let i = 1; i<arr.length; i++){
+        let rightSideSum = totalSum - arr[i] - leftSideSum
+        //in each iteration of the loop, see if the left side sum === the right side sum from the current index
+        if(leftSideSum === rightSideSum){
+            //if the left sum and right sum ARE equal, we return the current index
+            return i;
+        }
+        else{
+            //if the left sum and right sum are not equal, we add to the left sum the value at current index before moving on to the next index
+            leftSideSum+= arr[i]
+        }
     }
+    return -1; //if we go through the whole loop and we couldnt find matching left and right sum, then we return -1 saying that no index is the balance index
 }
 
 
