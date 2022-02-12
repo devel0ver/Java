@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+body{
+	width: 100%;
+	height: 100vh;
+	
+}
+.adj{
+	text-align: center;
+	vertical-align: middle;
+	line-height: 500px;
+	color: blue;
+}
+.green{
+	color: green;
+}
