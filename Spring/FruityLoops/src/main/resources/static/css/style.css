@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.size{
+	border: 20px solid pink;
+	width: 100%;
+}
+
+.text-color{
+	color: #ef8180;
+}
+
+.table-size{
+	width: 50%;
+	margin: 0 auto;
+}
