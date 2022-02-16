@@ -26,5 +26,19 @@ public class ExpenseService {
   public Expense create(Expense expenseItem) {
 	  return this.expenseRepo.save(expenseItem);
   }
-    
+  
+  //retrieves an Expense by id
+  public Expense FindExpense(Long id) {
+	  return this.expenseRepo.findById(id).orElse(null);
+  }
+  
+  //update a expense given an object
+   public Expense update(Expense expenseItem) {
+	   return this.expenseRepo.save(expenseItem);
+   }
+   
+   //delete a expense by its id
+   public void delete(Long id) {
+	   this.expenseRepo.deleteById(id);
+   }
 }

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ahmed.fullstacktravel.models.Expense;
@@ -44,4 +46,30 @@ public class ExpenseController {
 			return "redirect:/expenses";			
 		}
 	}
+	
+	@RequestMapping("/expense/edit/{id}")
+	public String edit(@PathVariable("id") Long id, Model model) {
+		Expense expenseToEdit = this.expenseService.FindExpense(id);
+		
+		model.addAttribute("expenseToEdit", expenseToEdit);
+		
+		return "edit.jsp";
+	}
+	
+	@PutMapping("/expense/update/{id}")
+	public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("expenseToEdit") Expense expenseItem, BindingResult result) {
+		if(result.hasErrors()) {
+			return "edit.jsp";
+		}else {
+			this.expenseService.update(expenseItem);
+			return "redirect:/expenses";
+		}
+	}
+	
+	@RequestMapping("/expense/delete/{id}")
+	public String delete(@PathVariable("id") Long id) {
+		this.expenseService.delete(id);
+		return "redirect:/expenses";
+	}
+	
 }

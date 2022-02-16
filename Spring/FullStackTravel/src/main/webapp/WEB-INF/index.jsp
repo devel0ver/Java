@@ -10,7 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <title>Insert title here</title>
 </head>
-<body style="background: linear-gradient(45deg,#29211fc9,#2e34aa93); height:100vh; ">
+<body style="background: linear-gradient(45deg,#29211fc9,#2e34aa93); height:100vh;">
     <div class="container">
         <h1  style="color: #08083ade;">Save Travels</h1>
         <table class="table table-dark table-striped text-center">
@@ -19,6 +19,7 @@
                     <th style="border-right: 2px solid rgba(245, 245, 245, 0.452);" scope="col">Expense</th>
                     <th style="border-right: 2px solid rgba(245, 245, 245, 0.452);" scope="col">Vendor</th>
                     <th scope="col">Amount</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,10 @@
                         <td style="border-right: 2px solid rgba(245, 245, 245, 0.452);">${expenseObj.name}</td>
                         <td style="border-right: 2px solid rgba(245, 245, 245, 0.452);">${expenseObj.vendor}</td>
                         <td>${expenseObj.price}</td>
+                        <td>
+                            <a href="/expense/edit/${expenseObj.id}">Edit</a> || 
+                            <a class="text-danger" href="/expense/delete/${expenseObj.id}">Delete</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -54,7 +59,7 @@
             <form:label path="description">Description: </form:label>
             <form:textarea path="description" class="form-control"/>
         </p>    
-        <input type="submit" value="Submit" class="btn btn-success"/>
+        <input type="submit" value="Add Expense" class="btn btn-primary"/>
         </form:form> 
     </div>
 </body>
