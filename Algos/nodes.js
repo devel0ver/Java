@@ -75,8 +75,34 @@ class SLL {
         return tail
     }
 
-
-
+    reverse(){
+        //we want to iterate throught the singly linked list using a runner from beginning to end
+        //create a variable called runner and set it to equal to the head
+        let runner = this.head
+        //create a variable (previous) to keep track of where the runner was at
+        let previous = runner
+        //as long as runner is pointing to something, we want to keep track of the next node
+        while(runner != null){
+            //keep track of the node that is next to the runner so liket that we can keep track of the next node
+            let nextNode = runner.next
+            //if runner is the head we want to make it point to null
+            if(runner == this.head){
+                runner.next = null
+            }
+            //else if runner is not the head we want to make it point to the previous node
+            else{
+                runner.next = previous
+            }
+            //set previous to be current runner
+            previous = runner
+            //if next is null, runner is at the last node and we can make last node the head
+            if (nextNode == null){
+                this.head = runner
+            }
+            //set runner to equal to next
+            runner = nextNode
+        }
+    }
 }
 
 let sll1 = new SLL()
@@ -88,7 +114,9 @@ sll1.addToBack(9)
 sll1.addtoFront(22)
 sll1.removeFront()
 sll1.removeBack()
+sll1.display()
 
+sll1.reverse()
 sll1.display()
 
 console.log(sll1)
