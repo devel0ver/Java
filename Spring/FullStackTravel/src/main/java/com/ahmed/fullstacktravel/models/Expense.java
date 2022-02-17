@@ -16,16 +16,17 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
-@Table(name="expenses")
+@Entity //@Entity annotation tells the class that it will represent a DB table (entity == table)
+@Table(name="expenses")	//@Table annotation tells SQL that the class we are building will have a table name. Best practice for table names all lowercase and plural
 public class Expense {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+	@Id	//for primary key
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	//this make the primary key auto-generate
 	private Long id;
 	
 	//name
-	@NotNull
-	@Size(min = 2, max = 100, message = "Expense name must be between 2-100 characters")
+	@NotNull	//this is a validation that says that the name must not be null
+	@Size(min = 2, max = 100, message = "Expense name must be between 2-100 characters") //@Size annotation is to validate strings and arrays lengths
 	private String name;
 	
 	//vendor
@@ -35,7 +36,7 @@ public class Expense {
 	
 	//price
 	@NotNull
-	@Min(value= 1, message = "Price must be at least 1 dolla!")
+	@Min(value= 1, message = "Price must be at least 1 dolla!") //@Min and @Max are validations for numbers/doubles/floats(decimal numbers)
 	private double price;
 	
 	//description
@@ -43,37 +44,32 @@ public class Expense {
 	@Size(min = 2, message = "Expense description must have at least 2 characters")
 	private String description;
 	
-	// This will not allow the createdAt column to be updated after creation
+	// This will not allow the createdAt column to be updated after creation these are time stamp number variables
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
 	
-	//empty constructor
+	//empty constructor(needed when we want to pass an empty object to the create form)
 	public Expense() {
 		
 	}
 
-	//loaded constructor
-	public Expense(
-			@NotNull @Size(min = 2, max = 100, message = "Expense name must be between 2-100 characters") String name,
-			@NotNull @Size(min = 2, max = 60, message = "Expense vendor must be between 2-60 characters") String vendor,
-			@NotNull @Min(value = 1, message = "Price must be at least 1 dolla!") double price,
-			@NotNull @Size(min = 2, message = "Expense description must have at least 2 characters") String description) {
-		super();
+	//loaded constructor --> you do not to initialize the ID, and the created_at and updated_at  -because they get auto generated
+	public Expense(String name,String vendor,double price,String description) {
 		this.name = name;
 		this.vendor = vendor;
 		this.price = price;
 		this.description = description;
 	}
 	
-	// other getters and setters removed for brevity
-    @PrePersist
+	
+    @PrePersist //@PrePersist means before saving into the DB, autogenerate the current time and set that as the created_at
     protected void onCreate(){
         this.createdAt = new Date();
     }
-    @PreUpdate
+    @PreUpdate //@PreUpdate means before updating, set the updated at to be the current time stamp
     protected void onUpdate(){
         this.updatedAt = new Date();
     }

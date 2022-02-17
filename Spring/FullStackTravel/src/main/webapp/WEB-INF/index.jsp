@@ -25,12 +25,12 @@
             <tbody>
                 <c:forEach items='${ allExpenses }' var='expenseObj'>
                     <tr>
-                        <td style="border-right: 2px solid rgba(245, 245, 245, 0.452);">${expenseObj.name}</td>
+                        <td style="border-right: 2px solid rgba(245, 245, 245, 0.452);"><a href="/expenses/${expenseObj.id}">${expenseObj.name}</a></td>
                         <td style="border-right: 2px solid rgba(245, 245, 245, 0.452);">${expenseObj.vendor}</td>
                         <td>${expenseObj.price}</td>
                         <td>
                             <a href="/expense/edit/${expenseObj.id}">Edit</a> || 
-                            <a class="text-danger" href="/expense/delete/${expenseObj.id}">Delete</a>
+                            <a class="btn btn-danger btn-sm" href="/expense/delete/${expenseObj.id}">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -38,7 +38,8 @@
         </table>
         <hr>
         <h1 style="color: #08083ade;">Add an expense:</h1>
-        <form:form action="/expense/create" method="post" modelAttribute="expense">
+        <form:form action="/expense/create" method="post" modelAttribute="expense"> <!-- The model attribute represents which model to blind to -->
+        <!-- The path="" must match the member variables from the Table Model class -->
             <form:errors style="color: rgba(204, 12, 12, 0.856);" path="name"/>
         <p>
             <form:label path="name">Expense Name: </form:label>
