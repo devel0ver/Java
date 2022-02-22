@@ -30,6 +30,7 @@
             <hr class="mt-5 text-light">
             <c:if test='${book.user.id == user.id}'>
                 <a href="/books/${book.id}/edit" class="btn btn-warning float-end mt-3">Edit</a>
+                <a href="/books/${book.id}/delete" style="width: 150px;" class="btn btn-danger float-start mt-3">Delete</a>
             </c:if>
         </div>
     </div>

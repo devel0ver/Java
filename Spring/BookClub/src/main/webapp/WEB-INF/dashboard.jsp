@@ -21,23 +21,65 @@
             <h5>Books from everyone's shelves:</h5>
             <a href="/books/new" class="btn btn-primary mt-2" style="height: 40px;">Add to my shelf</a>
         </div>
-        <table class="table table-dark mt-5">
+        <table class="table table-dark mt-3">
+            <h5 class="mt-3">Available books to borrow</h5>
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Title</th>
                     <th scope="col">Author Name</th>
                     <th scope="col">Posted By</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items='${ allBooks }' var='book'>
+                    <c:if test='${book.currentBorrower.id != loggedInUser.id}'>
                     <tr>
                         <th scope="row">${book.id}</th>
                         <td><a href="/books/${book.id}">${book.title}</a></td>
                         <td>${book.author}</td>
                         <td>${book.user.name}</td>
+                        <c:if test='${book.user.id == loggedInUser.id}'>
+                            <td>
+                                <a href="/books/${book.id}/edit">Edit</a> ||
+                                <a href="/books/${book.id}/delete">Delete</a>
+                            </td>
+                        </c:if>
+                        <c:if test='${book.user.id != loggedInUser.id}'>
+                            <td>
+                                <a href="/books/${book.id}/borrow" class="ms-3">Borrow</a>
+                            </td>
+                        </c:if>
                     </tr>
+                    </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
+        <table class="table table-dark mt-3">
+            <h5 class="mt-5">Books I'm Borrowing</h5>
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author Name</th>
+                    <th scope="col">Posted By</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items='${ allBooks }' var='book'>
+                    <c:if test='${book.currentBorrower.id == loggedInUser.id}'>
+                    <tr>
+                        <th scope="row">${book.id}</th>
+                        <td><a href="/books/${book.id}">${book.title}</a></td>
+                        <td>${book.author}</td>
+                        <td>${book.user.name}</td>
+                        <td>
+                            <a href="/books/${book.id}/return" class="ms-1">Return</a>
+                        </td>
+                    </tr>
+                    </c:if>
                 </c:forEach>
             </tbody>
         </table>

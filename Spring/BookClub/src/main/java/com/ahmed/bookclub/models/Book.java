@@ -33,6 +33,7 @@ public class Book {
     @Size(min=3, max=30, message="Author must be between 3 and 30 characters")
     private String author;
     
+    @Column(columnDefinition = "TEXT")
     @NotEmpty(message="Your thoughts must not be blank!")
     @Size(min=5, message="Your thoughts must contain at least 5 characters")
     private String thoughts;
@@ -69,6 +70,11 @@ public class Book {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	// Many to One (Many books can be on only one User)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "currentBorrower_id")
+	private User currentBorrower;
 	
 	//getters and setters
 	public Long getId() {
@@ -113,4 +119,11 @@ public class Book {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public User getCurrentBorrower() {
+		return currentBorrower;
+	}
+	public void setCurrentBorrower(User currentBorrower) {
+		this.currentBorrower = currentBorrower;
+	}
+	
 }

@@ -152,7 +152,7 @@ public class HomeController {
 			return "editbook.jsp";
 		}else {
 			this.appServ.updateBook(bookToEdit);
-			return "redirect:/books/{id}";			
+			return "redirect:/books";			
 		}
 	}
 	
@@ -165,6 +165,30 @@ public class HomeController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
+	}
+	
+	@RequestMapping("/books/{id}/delete")
+	public String delete(@PathVariable("id") Long id) {
+		this.appServ.deleteBook(id);
+		return "redirect:/books";
+	}
+	
+	@RequestMapping("/books/{id}/borrow")
+	public String borrow(@PathVariable("id") Long id, HttpSession session) {
+		Book book = this.appServ.getBookByID(id);
+		Long Id = (Long) session.getAttribute("loggedInUserID");
+		User loggedInUser = this.appServ.findOneUser(Id);
+		book.setCurrentBorrower(loggedInUser);
+		this.appServ.updateBook(book);
+		return "redirect:/books";
+	}
+	
+	@RequestMapping("/books/{id}/return")
+	public String returnBook(@PathVariable("id") Long id, HttpSession session) {
+		Book book = this.appServ.getBookByID(id);
+		book.setCurrentBorrower(null);
+		this.appServ.updateBook(book);
+		return "redirect:/books";
 	}
 	
 }

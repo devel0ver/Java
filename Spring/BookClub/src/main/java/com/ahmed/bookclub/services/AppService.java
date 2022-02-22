@@ -93,4 +93,8 @@ public class AppService {
 	public Book updateBook(Book book) {
 		return this.bookRepo.save(book);
 	}
+	
+	public void deleteBook(Long id) {
+		this.bookRepo.deleteById(id);
+	}
 }

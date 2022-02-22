@@ -76,6 +76,9 @@ public class User {
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	private List<Book> books;
 	
+	@OneToMany(mappedBy="currentBorrower", fetch = FetchType.LAZY)
+	private List<Book> borrowedBooks;
+	
 	
 	// TODO - Don't forget to generate getters and setters
 	public Long getId() {
