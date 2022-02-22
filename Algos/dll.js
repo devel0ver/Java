@@ -6,75 +6,117 @@ class Node {
     }
 }
 
+class DLL{
+    
 
-class DLL {
     constructor(){
-        this.head = null;
-        this.tail = null;
+        this.head=null;
+        this.tail=null;
     }
 
     addToBack(valueInput){
-        //create a new node with the valueInput
+        //create a node object with a given value to add to the back of the list eventually 
         let newNode = new Node(valueInput)
-
-        //check if the dll is empty 
+        //if the singly linked list is empty (this mean that its head === null), then set the head of the singly linked list to be this new node
         if(this.head == null){
-            //if the dll list is empty we can set the head and tail to be the same node 
-            this.head = newNode
-            this.tail = newNode
-        }else{
-            //point the newNode's previous property to what the tail currently is 
-            newNode.prev = this.tail
-            //else set the tail.next to equal to newNode
-            this.tail.next = newNode
-            //update tail to the newNode 
-            this.tail = newNode
+            this.head = newNode;
+            this.tail = newNode;
         }
+        else{
+        this.tail.next = newNode;
+        newNode.prev=this.tail;
+        this.tail=newNode; 
+        }
+                        
+        return this;
     }
-
-    addToFront(valueInput){
-
-    }
-
-    removeFromBack(){
-
-    }
-
-    removeFromFront(){
-        //create a variable to hold current head 
-        let temp = this.head
-        //set the head to be the next node 
-        this.head = this.head.next
-        //set previous head to point to null 
-        this.head.prev = null
-        //have temp point to null 
-        temp.next = null
-    }
-
-
-
-
-    display(){
-        let result = "";
-
-        //use runner to traverse the SLL
-        let runner = this.head;
-        while(runner != null){ //while runner is pointing at a node
-            result += `${runner.value} -->`
-            runner = runner.next //this is how you increment runner to go to the next node
+        display(){
+            let runner = this.head;
+            let result ="Node Contains: ";
+            while(runner!=null){
+                result += "->"+runner.value;
+                runner  = runner.next;
+            }
+            console.log(result);
         }
 
-        console.log(result)
-    }
+        addToFront(valueInput){
 
-        
-    }
+            let newNode = new Node(valueInput);
+            if(this.head == null){
+                this.head = newNode;
+                this.tail = newNode;
+            }
+            else{
+                newNode.next=this.head;
+                this.head.prev=newNode;
+                this.head = newNode;
+            }
 
+            return this;
 
-let dll1 = new DLL();
+        }
 
-dll1.addToBack(21)
-dll1.addToBack(18)
-dll1.addToBack(34)
-dll1.removeFromFront()
-dll1.display()
+        removeFromBack(){
+            if(this.tail==null){
+                return
+            }
+            if(this.head==this.tail){
+                this.head=null;
+                this.tail=null;
+                return;
+            }
+            else{
+                let newBack = this.tail.prev;
+                // this.tail=null;
+                this.tail=newBack;
+                this.tail.next=null;
+            }
+            
+
+        }
+
+        removeFromFront(){
+            if(this.head==null){
+                return
+            }
+            if(this.head==this.tail){
+                this.head=null;
+                this.tail=null;
+                return;
+            }
+            else{
+                let newHead = this.head.next;
+                // this.head=null;
+                this.head=newHead;
+                this.head.prev=null;
+            }
+            
+        }
+
+        reverse(){
+            //create a variable that we can use to iterate through the list (runner) and start it at the head 
+            let runner = this.head
+            //set the head to be where the tail is 
+            this.head = this.tail
+            //set the tail to point to the runner 
+            this.tail = runner
+            //While runner is point to the node
+            while(runner!= null){
+                //create a temp variable pointing to runner.next
+                let temp = runner.next
+                // set runner.next to equal to runner.prev
+                runner.next = runner.prev
+                //set runner.prev to equal to temp next
+                runner.prev = temp 
+                //set runner to equal to the temp next 
+                runner = temp
+            }
+}
+
+mylist = new DLL();
+
+mylist.addToBack(10).addToBack(20).addToBack(30).addToBack(40)
+mylist.display()
+mylist.reverse()
+mylist.display()
