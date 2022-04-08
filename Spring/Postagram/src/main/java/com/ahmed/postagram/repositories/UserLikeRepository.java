@@ -8,4 +8,5 @@ import com.ahmed.postagram.models.UserLike;
 
 public interface UserLikeRepository extends CrudRepository<UserLike, Long> {
 	UserLike findByLikedPictureAndUserLikePic(User user, Picture pic);
+	
 }

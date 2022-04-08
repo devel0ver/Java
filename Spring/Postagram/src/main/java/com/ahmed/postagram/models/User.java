@@ -106,6 +106,23 @@ public class User {
 	@OneToMany(mappedBy = "userLikePic", fetch=FetchType.LAZY)
 	private List<UserLike> userWhoLikedPic;
 	
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "likes", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private List<Picture> pictures;
+	
+	
+	//============================================
+	// One To Many user can comment on many posts
+	//============================================
+	@OneToMany(mappedBy = "userComment", fetch = FetchType.LAZY)
+	private List<Comment> comment;
+	
 	//Getters And Setters
 	public Long getId() {
 		return id;
@@ -172,6 +189,18 @@ public class User {
 	}
 	public void setUserWhoLikedPic(List<UserLike> userWhoLikedPic) {
 		this.userWhoLikedPic = userWhoLikedPic;
+	}
+	public List<Picture> getPictures() {
+		return pictures;
+	}
+	public void setPictures(List<Picture> pictures) {
+		this.pictures = pictures;
+	}
+	public List<Comment> getComment() {
+		return comment;
+	}
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
 	}
 	
 	

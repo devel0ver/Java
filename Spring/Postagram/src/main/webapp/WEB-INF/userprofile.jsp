@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+    <div class="container">
+        <h1>${userToShow.userName}, profile</h1>
+    </div>
 </body>
 </html>

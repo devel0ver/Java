@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -53,6 +55,23 @@ public class Picture {
     //===============================
     @OneToMany(mappedBy="likedPicture", fetch = FetchType.LAZY)
     private List<UserLike> pictureLiked;
+    
+    
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "likes", 
+        joinColumns = @JoinColumn(name = "post_id"), 
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )     
+    private List<User> usersThatLikedPic;
+        
+    //============================================
+  	// One To Many can comment on many posts
+  	//============================================
+  	@OneToMany(mappedBy = "pictureComment", fetch = FetchType.LAZY)
+  	private List<Comment> comment;
+  	
 	
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -114,4 +133,21 @@ public class Picture {
 	public void setPictureLiked(List<UserLike> pictureLiked) {
 		this.pictureLiked = pictureLiked;
 	}
+
+	public List<User> getUsersThatLikedPic() {
+		return usersThatLikedPic;
+	}
+
+	public void setUsersThatLikedPic(List<User> usersThatLikedPic) {
+		this.usersThatLikedPic = usersThatLikedPic;
+	}
+
+	public List<Comment> getComment() {
+		return comment;
+	}
+
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
+	
 }

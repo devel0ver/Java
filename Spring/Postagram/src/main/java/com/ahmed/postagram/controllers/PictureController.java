@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,19 +19,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ahmed.postagram.models.Comment;
 import com.ahmed.postagram.models.Picture;
 import com.ahmed.postagram.models.User;
 import com.ahmed.postagram.models.UserLike;
+import com.ahmed.postagram.services.CommentService;
 import com.ahmed.postagram.services.PictureService;
+import com.ahmed.postagram.services.UserLikeService;
 import com.ahmed.postagram.services.UserService;
 
 @Controller
 public class PictureController {
 	 @Autowired
-     private UserService userServ;
+     UserService userServ;
 	 
 	 @Autowired
-	 private PictureService picServ;
+	 PictureService picServ;
+	 
+	 @Autowired
+	 UserLikeService likeServ;
+	 
+	 @Autowired
+	 CommentService commentServ;
+	 
 	 
 	 private String UPLOADED_FOLDER="src/main/resources/static/images/";
 
@@ -46,10 +56,31 @@ public class PictureController {
     		User loggedInUser = this.userServ.findOneUser(id);
     		model.addAttribute("loggedInUser", loggedInUser);
     		
-    		model.addAttribute("allUsers", this.userServ.allUsers());
+//    		model.addAttribute("allUsers", this.userServ.allUsers());
+    		
+    		model.addAttribute("orderedPics", this.picServ.findByOrderId());
+    		
+    		model.addAttribute("comment", new Comment());
     		
     		return "dashboard.jsp";
     }
+	
+	@PostMapping("/comment/create/{pics_id}")
+	public String createComment(@PathVariable("pics_id") Long picId, @ModelAttribute("comment") Comment comment, Model model, HttpSession session) {
+		
+		Picture currentPic = picServ.findOnePic(picId);
+		
+		Long id = (Long) session.getAttribute("loggedInUserID");
+		User currentUser = userServ.findOneUser(id);
+		comment.setUserComment(currentUser);
+		comment.setPictureComment(currentPic);
+		
+//		commentServ.createComment(comment);
+		
+		
+		return "redirect:/home";
+	}
+	
 	
 	@PostMapping("/home/upload")
 	public String uploadPic(@RequestParam("pic") MultipartFile file, @RequestParam("description") String desc, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -81,35 +112,45 @@ public class PictureController {
 		return "redirect:/home";
 	}
 	
-	@PostMapping("/post/like/{id}")
+	@GetMapping("/post/like/{id}")
 	public String likePost(@PathVariable("id") Long id, HttpSession session, Model model) {
 		Picture currentPic = picServ.findOnePic(id);
 		
 		Long Id = (Long)session.getAttribute("loggedInUserID");
 		User currentUser = userServ.findOneUser(Id);
 		
-//		model.addAttribute("newLike", new UserLike());
+		model.addAttribute("currentUser", currentUser);
 		
 		System.out.println("This is currentUser: " + currentUser);
 		System.out.println("This is currentPic: " + currentPic);
 		
 		
-		UserLike like = new UserLike();
+		UserLike like = new UserLike(currentPic,currentUser);
 		
-		List<UserLike> users = currentUser.getUserWhoLikedPic();
+		this.likeServ.saveLike(like);
 		
-		System.out.println("This is users: " + users);
-		
-		users.add(users);
-		System.out.println("This is users after add: " + users);
-		
-		
-		currentPic.setPictureLiked(users);
-		
-		return "";
+		return "redirect:/home";
 	}
 	
-	@GetMapping("/home/user/{id}")
+	
+	@GetMapping("/post/unlike/{id}")
+	public String unLikePost(@PathVariable("id") Long id, HttpSession session, Model model) {
+		Picture currentPic = picServ.findOnePic(id);
+		
+		Long Id = (Long)session.getAttribute("loggedInUserID");
+		User currentUser = userServ.findOneUser(Id);
+		
+		
+		currentPic.getUsersThatLikedPic().remove(currentUser);
+		
+		this.picServ.updatePic(currentPic);
+		
+		return "redirect:/home";
+	}
+	
+	
+	
+	@GetMapping("/user/profile/{id}")
 	public String showUserPage(@PathVariable("id") Long id, Model model) {
 		
 		model.addAttribute("userToShow", this.userServ.findOneUser(id));
