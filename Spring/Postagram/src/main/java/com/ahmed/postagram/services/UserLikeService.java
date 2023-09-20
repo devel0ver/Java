@@ -15,17 +15,17 @@ public class UserLikeService {
 
 	@Autowired
 	private UserLikeRepository userLikeRepo;
-	
+
 	public UserLike saveLike(UserLike like) {
 		return this.userLikeRepo.save(like);
 	}
-	
+
 	public List<UserLike> getAllLikedUsers() {
 		return (List<UserLike>) this.userLikeRepo.findAll();
 	}
-	
+
 	public UserLike checkIfLiked(User user, Picture pic) {
 		return this.userLikeRepo.findByLikedPictureAndUserLikePic(user, pic);
 	}
-	
+
 }

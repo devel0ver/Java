@@ -10,17 +10,17 @@ import com.ahmed.postagram.repositories.CommentRepository;
 
 @Service
 public class CommentService {
-	
+
 	@Autowired
 	CommentRepository commentRepo;
-	
+
 	public List<Comment> findAllComments(){
 		return commentRepo.findAll();
 	}
-	
+
 	public Comment createComment(Comment comment) {
 		return commentRepo.save(comment);
 	}
-	
-	
+
+
 }

@@ -23,13 +23,13 @@ public class Comment {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
+
 	private String userCommentOnPost;
-	
-	
+
+
 	public Comment() {}
-	
-	
+
+
 	public Comment(String userCommentOnPost, User userComment, Picture pictureComment) {
 		this.userCommentOnPost = userCommentOnPost;
 		this.userComment = userComment;
@@ -40,19 +40,19 @@ public class Comment {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User userComment;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "picture_id")
 	private Picture pictureComment;
-	
-	
-	
+
+
+
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = new Date();

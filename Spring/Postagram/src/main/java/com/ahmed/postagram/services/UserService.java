@@ -21,11 +21,11 @@ public class UserService {
 	// TO-DO: Write register and login methods!
     public User register(User newUser, BindingResult result) {
     	// TO-DO - Reject values or register if no errors:
-        
+
     	// Reject if email is taken (present in database)
     	Optional<User> potentialUser = this.userRepo.findByEmail(newUser.getEmail()); //check if the email of the object coming from the registration form matches any users email in the db. If the email matches, that means the email is taken!
-    	
-    	
+
+
     	if(potentialUser.isPresent()) {
     		//this means email is taken b/c it found a user that matched the email from reg form
     		result.rejectValue("email", "EmailTaken", "This Email is taken! Try again.");
@@ -35,28 +35,28 @@ public class UserService {
     	if(!newUser.getPassword().equals(newUser.getConfirm())) {
     		result.rejectValue("confirm", "NoMatchy", "Password must match Confirm Password!");
     	}
-        
+
         // Return null if result has errors (if theres validation errors still)
-    	if(result.hasErrors()) {  
+    	if(result.hasErrors()) {
     		return null;
     	}else { //if no errors after checking all the validations, then we can create a user.
     		//to crate a user, we must first secure their password using bcrypt then save them to the db
     		String hashed = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
-    		
+
     		//set the user objects password to be the hashed password
     		newUser.setPassword(hashed);
     		return this.userRepo.save(newUser);
-    		
+
     	}
     }
     public User login(LoginUser newLoginObject, BindingResult result) {
-    	
-    		
-    	
+
+
+
     		// Find user in the DB by email
     		Optional<User> potentialUser = this.userRepo.findByEmail(newLoginObject.getEmail());
         // Reject if NOT present
-        //if the email was not found, create a custom validation error message 
+        //if the email was not found, create a custom validation error message
     		if(!potentialUser.isPresent()) {
     			result.rejectValue("email", "NotFound", "This email does not exist. Who you?");
     		}else {
@@ -66,7 +66,7 @@ public class UserService {
     			    result.rejectValue("password", "No Matchy", "Invalid Password!");
     			}
     		}
-    		
+
     		// Return null if result has errors
     		if(result.hasErrors()) {
     			return null;
@@ -74,21 +74,21 @@ public class UserService {
     			// Otherwise, return the user object
     			return potentialUser.get();
     		}
-        
-        
+
+
     }
-    
-    
+
+
     //get one user by id
     public User findOneUser(Long id) {
-    	
+
     		return this.userRepo.findById(id).orElse(null);
     }
-    
+
     //get all users
     public List<User> allUsers() {
     	return(List<User>)this.userRepo.findAll();
     }
-    
-    
+
+
 }

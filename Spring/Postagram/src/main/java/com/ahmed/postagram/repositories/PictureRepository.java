@@ -9,6 +9,6 @@ import com.ahmed.postagram.models.Picture;
 
 @Repository
 public interface PictureRepository extends CrudRepository<Picture, Long> {
-	
+
 	public List<Picture> findAllByOrderByIdDesc();
 }

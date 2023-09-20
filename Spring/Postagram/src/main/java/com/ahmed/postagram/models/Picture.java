@@ -23,11 +23,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="pics")
 public class Picture {
-	
+
 	public Picture() {
-		
+
 	}
-	
+
 	public Picture(String image_url, String description, User user) {
 		this.image_url = image_url;
 		this.description = description;
@@ -39,46 +39,46 @@ public class Picture {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
+
 	private String image_url;
 	private String description;
-	
+
 	//============================================
 	// Many To One Pics can be posted by one User
 	//============================================
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uploader_id")
 	private User user;
-	
+
 	// ===============================
     // One to Many
     //===============================
     @OneToMany(mappedBy="likedPicture", fetch = FetchType.LAZY)
     private List<UserLike> pictureLiked;
-    
-    
-    
+
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "likes", 
-        joinColumns = @JoinColumn(name = "post_id"), 
+        name = "likes",
+        joinColumns = @JoinColumn(name = "post_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
-    )     
+    )
     private List<User> usersThatLikedPic;
-        
+
     //============================================
   	// One To Many can comment on many posts
   	//============================================
   	@OneToMany(mappedBy = "pictureComment", fetch = FetchType.LAZY)
   	private List<Comment> comment;
-  	
-	
+
+
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-    
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = new Date();
@@ -87,7 +87,7 @@ public class Picture {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
-    
+
     //Getters and Setters
 	public Long getId() {
 		return id;
@@ -149,5 +149,5 @@ public class Picture {
 	public void setComment(List<Comment> comment) {
 		this.comment = comment;
 	}
-	
+
 }
