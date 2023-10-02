@@ -8,7 +8,7 @@ public class PA1
     {
         head();
         body();
-        usa();
+        US();
         body();
         head();
     }
@@ -25,7 +25,7 @@ public class PA1
         System.out.println("     |      | |      |");
         System.out.println("     +------+ +------+");
     }
-    public static void usa()
+    public static void US()
     {
         System.out.println("     +------+ +------+");
         System.out.println("     |United| |United|");
